@@ -1,5 +1,6 @@
 'use client';
 
+import { appName } from "@/lib/utils";
 import {useConvexAuth} from "convex/react";
 import {SignInButton, UserButton, useUser} from "@clerk/clerk-react"
 import useScrollTop from "@/hooks/use-scroll-top";
@@ -8,9 +9,8 @@ import Logo from "./logo";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import Spinner from "@/components/ui/spinner";
-import { Link } from "lucide-react";
 import { Authenticated, Unauthenticated, AuthLoading } from "convex/react";
-
+import Link from "next/link";
 
 const Navbar = () => {
     const { isLoading, isAuthenticated } = useConvexAuth();
@@ -36,7 +36,7 @@ const Navbar = () => {
                         </SignInButton>
                         <SignInButton mode="modal">
                             <Button size="sm">
-                                Get Landing Links Free
+                                Get {appName} Free
                             </Button>
                         </SignInButton>                        
                     </div>
@@ -45,7 +45,7 @@ const Navbar = () => {
                     <>
                         <Button variant="ghost" size="sm"> 
                             <Link href="/documents">
-                                Enter Landing Links 
+                                Enter {appName} 
                             </Link>
                         </Button>
                         <UserButton 
