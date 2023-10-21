@@ -1,20 +1,20 @@
 'use client';
 
 import { cn } from "@/lib/utils";
-import { ChevronsLeft, MenuIcon, PlusCircle, PlusCircleIcon } from "lucide-react";
+import { ChevronsLeft, MenuIcon, PlusCircle, PlusCircleIcon, Search, Settings } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React, { ElementRef, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import UserItem from "./user-item";
-import { useMutation, useQuery } from "convex/react";
+import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import Item from "./item";
 import { toast } from "sonner";
+import DocumentList from "./document-list";
 
 const Navigation = () => {
     const pathname = usePathname();
     const isMobile = useMediaQuery("(max-width: 768px");
-    const documents = useQuery(api.documents.get);
     const create = useMutation(api.documents.create);
 
     const isResizingRef = useRef(false);
@@ -25,17 +25,12 @@ const Navigation = () => {
 
 
     useEffect(() => {
-        if(isMobile) {
-            collapse();
-        } else {
-            resetWidth();
-        }
+        if(isMobile) { collapse(); }
+        else { resetWidth(); }
     }, [isMobile])
 
-    useEffect(() => {
-        if(isMobile) {
-            collapse();
-        }
+    useEffect(() => { 
+        if(isMobile) collapse() 
     },[pathname, isMobile])
 
 
@@ -49,7 +44,6 @@ const Navigation = () => {
         document.addEventListener("mousemove", handleMouseMove);
         document.addEventListener("mouseup", handleMouseUp);
     }
-
     const handleMouseMove = (event: MouseEvent) => {
         if(!isResizingRef.current) return;
 
@@ -64,13 +58,11 @@ const Navigation = () => {
             navbarRef.current.style.setProperty("width", `calculate(100%-${newWidth}px)`);
         }
     }
-
     const handleMouseUp = () => { 
         isResizingRef.current = false;
         document.removeEventListener("mousemove", handleMouseMove)
         document.removeEventListener("mouseup", handleMouseUp)
     }
-
     const resetWidth = () => {
         if(sidebarRef.current && navbarRef.current) {
             setIsCollapsed(false);
@@ -82,7 +74,6 @@ const Navigation = () => {
         }
         setTimeout(() => setIsResetting(false), 300);
     }
-
     const collapse = () => {
         if(sidebarRef.current && navbarRef.current) {
             setIsCollapsed(true)
@@ -129,17 +120,24 @@ const Navigation = () => {
                 <div>
                     <UserItem />
                     <Item 
+                        onClick={() => {}}
+                        label="Search"
+                        icon={Search}
+                        isSearch
+                    />
+                    <Item 
+                        onClick={() => {}}
+                        label="Settings"
+                        icon={Settings}
+                    />
+                    <Item 
                         onClick={handleCreate}
                         label="New page"
                         icon={PlusCircle}
                     />
                 </div>
                 <div className="mt-4">
-                    {
-                        documents?.map(document => {
-                            return <p>{document.title}</p>
-                        })
-                    }
+                    <DocumentList />
                 </div>
                 <div 
                     onMouseDown={(e)=>{handleMouseDown(e)}}
