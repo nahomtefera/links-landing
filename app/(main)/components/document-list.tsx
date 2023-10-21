@@ -61,7 +61,7 @@ const DocumentList = ({ parentDocumentId, level = 0}: DocumentListProps) => {
                     level === 0 && "hidden"
                 )}
             > 
-                No Pages inside
+                &nbsp;&nbsp;&nbsp;No Pages inside
             </p>
             {documents.map((document) => {
                 return(
