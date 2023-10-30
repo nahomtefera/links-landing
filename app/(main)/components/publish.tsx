@@ -32,7 +32,8 @@ const Publish = ({
 
         const promise = update({
             id: initialData._id,
-            isPublished: true
+            isPublished: true,
+            publishedContent: initialData.content
         })
          .finally(()=>{setIsSubmitting(false)})
         
@@ -73,14 +74,15 @@ const Publish = ({
             <PopoverTrigger asChild>
                 <Button size="sm" variant="ghost">
                     {initialData.isPublished 
-                        ? "Public"
+                        ? initialData.content !== initialData.publishedContent
+                            ? "Publish new content"
+                            : "Published"
                         : "Publish"
                     }
-                    {initialData.isPublished && (
-                        <Globe  
-                            className="text-sky-500 w-4 h-4 ml-2"
-                        />
-                    )}
+                    {initialData.isPublished && initialData.content !== initialData.publishedContent
+                        ? <Globe className="text-yellow-500 w-4 h-4 ml-2"/>
+                        : <Globe className="text-sky-500 w-4 h-4 ml-2"/>
+                    }
                 </Button>
             </PopoverTrigger>
             <PopoverContent
@@ -92,12 +94,20 @@ const Publish = ({
                 {initialData.isPublished ? (
                     <div className="space-y-4">
                         <div className="flex items-center gap-x-2">
-                            <Globe 
-                                className="text-sky-500 animate-pulse h-4 w-4"
-                            />
-                            <p className="text-sm font-medium text-sky-500">
-                                This note is live on web.
-                            </p>
+                            {initialData.content !== initialData.publishedContent
+                                ? <Globe className="text-yellow-500 animate-pulse h-4 w-4"/>
+                                : <Globe className="text-sky-500 animate-pulse h-4 w-4"/>
+                            }
+                            
+                            {initialData.content !== initialData.publishedContent 
+                                ? <p className="text-sm font-medium text-yellow-500">
+                                    New content is not published.
+                                  </p>
+                                : <p className="text-sm font-medium text-sky-500">
+                                    This note is live on web.
+                                  </p>
+                            }
+                            
                         </div>
                         <div className="flex items-center">
                             <input 
@@ -117,6 +127,16 @@ const Publish = ({
                                 )}
                             </Button>
                         </div>
+                        {initialData.content !== initialData.publishedContent && (
+                            <Button
+                                disabled={isSubmitting}
+                                onClick={onPublish}
+                                className="w-full text-xs"
+                                size="sm"
+                            >
+                                Publish
+                            </Button>
+                        )}
                         <Button
                             size="sm"
                             className="w-full text-xs"

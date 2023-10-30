@@ -65,7 +65,7 @@ const DocumentIdPage = ({
                 <Editor 
                     editable={false}
                     onChange={onChange}
-                    initialContent={document.content}
+                    initialContent={document.publishedContent}
                 />
             </div>
         </div>

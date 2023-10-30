@@ -1,14 +1,16 @@
 import React from "react";
 import { useState, useEffect } from "react";
 
-import {
-  BlockNoteView,
-  useBlockNote,
-  createReactBlockSpec,
-  InlineContent,
-  ReactSlashMenuItem,
-  getDefaultReactSlashMenuItems,
-} from "@blocknote/react";
+import { 
+  DropdownMenu,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem
+} from "@/components/ui/dropdown-menu";
+
+import { ChevronDown, LucideIcon, MoreHorizontal, Plus, Trash, Settings2 } from "lucide-react";
+import "./cardBlock.css";
 
 const cardStyles = {
   backgroundColor: "#ffffff", // White background
@@ -24,7 +26,6 @@ const cardStyles = {
 const titleStyles = {
   fontSize: "2rem", // Large, bold text
   fontWeight: "bold",
-  marginBottom: "8px",
   userSelect: "none"
 };
 
@@ -32,7 +33,6 @@ const linkStyles = {
   color: "#0077b6", // Subtle blue link text
   textDecoration: "none",
   fontSize: "1.4rem", // Medium-sized link text
-  marginTop: "8px",
   userSelect: "none"
 };
 
@@ -61,8 +61,8 @@ const flatTextStyles = {
 };
 
 const CardBlock = ({ block, editor }) => {
-    console.log("editor: ", editor);
-    console.log("editor options ", editor.options.editable);
+    // console.log("editor: ", editor);
+    // console.log("editor options ", editor.options.editable);
   const editable = editor.options.editable;
   const blockId = block.id;
   let initialValues;
@@ -89,13 +89,58 @@ const CardBlock = ({ block, editor }) => {
     }
   };
   
+  const onDelete = () =>{
+    editor.removeBlocks([editor.getBlock(blockId)])
+  }
 
   return (
     <>
       <div style={cardStyles}>
-        <div style={titleStyles}>{input1}</div>
+        {editable && (
+            <div className="flex items-right justify-end gap-x-2" style={{display:"flex", flexDirection:"column"}}>
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                  asChild
+                >
+                  <div
+                    role="button"
+                    className="opacity-0 group-hover:opacity-100 h-full rounded-sm hover-bg-neutral-300 dark:hover-bg-neutral-600"
+                    style={{alignSelf:"end"}}
+                  >
+                    <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
+                  </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-60" align="start" side="right" forceMount>
+                  <DropdownMenuItem onClick={onDelete}>
+                    <Trash className="h-4 w-4 mr-2" />
+                    Delete
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={()=>{}}>
+                    <Settings2 className="h-4 w-4 mr-2" />
+                    Styles
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={()=>{}}>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Thing
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+          </div>
+        )}
 
-        <p style={linkStyles}>{input2}</p>
+        { input1 && (
+          <div style={titleStyles}>{input1}</div>
+        )}
+        
+        {input2 && 
+          <p style={linkStyles}>{input2}</p>
+        }
+        
       </div>
       {
         editable && (

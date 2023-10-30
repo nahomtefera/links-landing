@@ -1,0 +1,71 @@
+.ml-auto {
+    margin-left: auto;
+  }
+  
+  .flex {
+    display: flex;
+  }
+  
+  .items-center {
+    align-items: center;
+  }
+  .items-right {
+    align-items: right;
+  }
+  
+  .justify-end {
+    justify-content: end;
+  }
+
+  .gap-x-2 {
+    gap: 0.5rem;
+  }
+  
+  /* Add other Tailwind classes as needed */
+  .opacity-0 {
+    opacity: 0.4;
+  }
+  
+  .group-hover\:opacity-100:hover {
+    opacity: 1;
+  }
+  
+  .h-full {
+    height: 100%;
+  }
+  
+  .rounded-sm {
+    border-radius: 0.125rem;
+  }
+  
+  .hover-bg-neutral-300:hover {
+    background-color: var(--neutral-300);
+  }
+  
+  .dark\:hover-bg-neutral-600:hover {
+    background-color: var(--neutral-600);
+  }
+  
+  .h-4 {
+    height: 1rem;
+  }
+  
+  .w-4 {
+    width: 1rem;
+  }
+  
+  .text-muted-foreground {
+    color: var(--muted-foreground);
+  }
+  
+  .text-xs {
+    font-size: 0.75rem;
+  }
+  
+  .w-60 {
+    width: 4rem;
+  }
+  
+  .mr-2 {
+    margin-right: 0.25rem;
+  }
