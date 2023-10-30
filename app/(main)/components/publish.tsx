@@ -72,7 +72,10 @@ const Publish = ({
         <Popover>
             <PopoverTrigger asChild>
                 <Button size="sm" variant="ghost">
-                    Publish
+                    {initialData.isPublished 
+                        ? "Public"
+                        : "Publish"
+                    }
                     {initialData.isPublished && (
                         <Globe  
                             className="text-sky-500 w-4 h-4 ml-2"
