@@ -12,6 +12,7 @@ import {
 import { ChevronDown, LucideIcon, MoreHorizontal, Plus, Trash, Settings2, Pencil } from "lucide-react";
 import "./cardBlock.css";
 import Link from "next/link";
+import { BlockSchema } from "@blocknote/core";
 
 const cardStyles = {
   backgroundColor: "#ffffff", // White background
@@ -57,11 +58,7 @@ const flatCardStyles = {
   marginTop: "20px",
 };
 
-const flatTextStyles = {
-  fontSize: "1.2rem", // Medium-sized text
-};
-
-const CardBlock = ({ block, editor }) => {
+const CardBlock = ({ block, editor}:any) => {
     // console.log("editor: ", editor);
     // console.log("editor options ", editor.options.editable);
   const editable = editor.options.editable;
@@ -73,7 +70,6 @@ const CardBlock = ({ block, editor }) => {
     }
   }
 
-  const titleRef = useRef<HTMLDivElement>(initialValues?.input1 || "");
   const [input1, setInput1] = useState(initialValues?.input1 || "");
   const [input2, setInput2] = useState(initialValues?.input2 || "");
 
