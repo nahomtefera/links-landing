@@ -8,7 +8,8 @@ import UseOrigin from "@/hooks/use-origin";
 import { useMutation } from "convex/react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Check, Copy, Globe } from "lucide-react";
+import { Check, Copy, Globe, ExternalLink } from "lucide-react";
+import Link from "next/link";
 
 
 
@@ -69,17 +70,19 @@ const Publish = ({
         }, 1000)
     }
 
+    const isDraft = initialData?.content?.trim() !== initialData?.publishedContent?.trim()
+
     return ( 
         <Popover>
             <PopoverTrigger asChild>
                 <Button size="sm" variant="ghost">
                     {initialData.isPublished 
-                        ? initialData.content !== initialData.publishedContent
-                            ? "Publish new content"
+                        ? isDraft
+                            ? "Publish"
                             : "Published"
                         : "Publish"
                     }
-                    {initialData.isPublished && initialData.content !== initialData.publishedContent
+                    {initialData.isPublished && isDraft
                         ? <Globe className="text-yellow-500 w-4 h-4 ml-2"/>
                         : <Globe className="text-sky-500 w-4 h-4 ml-2"/>
                     }
@@ -94,19 +97,27 @@ const Publish = ({
                 {initialData.isPublished ? (
                     <div className="space-y-4">
                         <div className="flex items-center gap-x-2">
-                            {initialData.content !== initialData.publishedContent
+                            {isDraft
                                 ? <Globe className="text-yellow-500 animate-pulse h-4 w-4"/>
                                 : <Globe className="text-sky-500 animate-pulse h-4 w-4"/>
                             }
                             
-                            {initialData.content !== initialData.publishedContent 
+                            {isDraft 
                                 ? <p className="text-sm font-medium text-yellow-500">
-                                    New content is not published.
+                                    New content
                                   </p>
                                 : <p className="text-sm font-medium text-sky-500">
-                                    This note is live on web.
+                                    This note is live
                                   </p>
                             }
+                            
+                            {isDraft
+                                ? ""
+                                : <Link href={`/preview/${initialData._id}`} target="_blank">
+                                    <ExternalLink className="text-sky-500 w-4 h-4 ml-2"/>
+                                  </Link>
+                            }
+
                             
                         </div>
                         <div className="flex items-center">
@@ -127,7 +138,7 @@ const Publish = ({
                                 )}
                             </Button>
                         </div>
-                        {initialData.content !== initialData.publishedContent && (
+                        {isDraft && (
                             <Button
                                 disabled={isSubmitting}
                                 onClick={onPublish}

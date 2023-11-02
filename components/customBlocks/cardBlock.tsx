@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import { 
   DropdownMenu,
@@ -9,8 +9,9 @@ import {
   DropdownMenuItem
 } from "@/components/ui/dropdown-menu";
 
-import { ChevronDown, LucideIcon, MoreHorizontal, Plus, Trash, Settings2 } from "lucide-react";
+import { ChevronDown, LucideIcon, MoreHorizontal, Plus, Trash, Settings2, Pencil } from "lucide-react";
 import "./cardBlock.css";
+import Link from "next/link";
 
 const cardStyles = {
   backgroundColor: "#ffffff", // White background
@@ -72,6 +73,7 @@ const CardBlock = ({ block, editor }) => {
     }
   }
 
+  const titleRef = useRef<HTMLDivElement>(initialValues?.input1 || "");
   const [input1, setInput1] = useState(initialValues?.input1 || "");
   const [input2, setInput2] = useState(initialValues?.input2 || "");
 
@@ -93,88 +95,96 @@ const CardBlock = ({ block, editor }) => {
     editor.removeBlocks([editor.getBlock(blockId)])
   }
 
-  return (
-    <>
-      <div style={cardStyles}>
-        {editable && (
-            <div className="flex items-right justify-end gap-x-2" style={{display:"flex", flexDirection:"column"}}>
-              <DropdownMenu>
-                <DropdownMenuTrigger
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                  asChild
-                >
-                  <div
-                    role="button"
-                    className="opacity-0 group-hover:opacity-100 h-full rounded-sm hover-bg-neutral-300 dark:hover-bg-neutral-600"
-                    style={{alignSelf:"end"}}
+  if(editable) {
+    return (
+      <>
+        <div style={cardStyles}>
+          {editable && (
+              <div className="flex items-right justify-end gap-x-2" style={{display:"flex", flexDirection:"column"}}>
+                <DropdownMenu>
+                  <DropdownMenuTrigger
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                    asChild
                   >
-                    <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
-                  </div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-60" align="start" side="right" forceMount>
-                  <DropdownMenuItem onClick={onDelete}>
-                    <Trash className="h-4 w-4 mr-2" />
-                    Delete
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={()=>{}}>
-                    <Settings2 className="h-4 w-4 mr-2" />
-                    Styles
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={()=>{}}>
-                    <Plus className="h-4 w-4 mr-2" />
-                    Thing
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-          </div>
-        )}
-
-        { input1 && (
-          <div style={titleStyles}>{input1}</div>
-        )}
-        
-        {input2 && 
-          <p style={linkStyles}>{input2}</p>
-        }
-        
-      </div>
-      {
-        editable && (
-            <div style={{display: "flex", justifyItems:"center", justifyContent:"center"}}>
-                <input
-                    style={{
-                        border: "1px solid #efefef",
-                        borderRadius: "10px",
-                        padding: ".5em",
-                        margin: ".2em"
-                    }}
-                    value={input1}
-                    onChange={(e) => {
-                    onHandleChange(e.target.value, "input1");
-                    }}
-                />
-                <input
-                    style={{
-                        border: "1px solid #efefef",
-                        borderRadius: "10px",
-                        padding: ".5em",
-                        margin: ".2em"
-                    }}
-                    value={input2}
-                    onChange={(e) => {
-                    onHandleChange(e.target.value, "input2");
-                    }}
-                />
+                    <div
+                      role="button"
+                      className="opacity-0 group-hover:opacity-100 h-full rounded-sm hover-bg-neutral-300 dark:hover-bg-neutral-600"
+                      style={{alignSelf:"end"}}
+                    >
+                      <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-60" align="start" side="right" forceMount>
+                    <DropdownMenuItem onClick={onDelete}>
+                      <Trash className="h-4 w-4 mr-2" />
+                      Delete
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={()=>{}}>
+                      <Settings2 className="h-4 w-4 mr-2" />
+                      Styles
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={()=>{}}>
+                      <Plus className="h-4 w-4 mr-2" />
+                      Thing
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
             </div>
-        )
-      }
+          )}
+  
+          <div className="input-editor">
+            <Pencil className="input-pencil" />
+            <input
+              disabled={editable ? false : true }
+              className="cardBlockInput"
+              value={input1}
+              placeholder="Title"
+              onChange={(e) => {
+                onHandleChange(e.target.value, "input1");
+              }}
+            />
+          </div>
+        
+          <div className="input-editor">
+            <Pencil className="input-pencil" />
+            <input
+              disabled={editable ? false : true }
+              className="cardBlockInput urlInput"
+              value={input2}
+              placeholder="URL"
+              onChange={(e) => {
+                onHandleChange(e.target.value, "input2");
+              }}
+            />
+          </div>
+          
+        </div>
+      </>
+    );
+  }
 
-    </>
-  );
+  else {
+    return (
+      <div className="cardContainer">
+
+        <Link href={input2} target="_blank">
+          <div className="cardOnPreview">
+            <div className="cardOnPreviewContent">
+              <span className="cardOnPreviewTitle">
+                {input1}
+              </span>
+            </div>
+            <div className="cardPreviewShadow"></div>
+          </div>
+        </Link>
+      </div>
+    )
+  }
+
 };
 
 export default CardBlock;
