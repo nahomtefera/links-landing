@@ -36,8 +36,8 @@
 
 .cardOnPreview {
   text-align: center;
-  width: 100%;
-  min-width: 650px;
+  width: 80%;
+  max-width: 650px;
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 7px 8px 0px rgba(0, 0, 0, 1);
