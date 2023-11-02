@@ -30,14 +30,15 @@
 }
 
 .cardContainer {
-  display: flex;
-  justify-content: center;
+  display: block;
+  width: 80%;
+  max-width: 650px;
+  margin: 0 auto;
 }
 
 .cardOnPreview {
   text-align: center;
-  width: 80%;
-  max-width: 650px;
+  width: 100%;
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 7px 8px 0px rgba(0, 0, 0, 1);
