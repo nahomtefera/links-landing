@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Poppins } from "next/font/google";
-import { cn } from "@/lib/utils";
+import { appName, cn } from "@/lib/utils";
 
 const font = Poppins({
     subsets: ["latin"],
@@ -25,7 +25,7 @@ const Logo = () => {
                 className="hidden dark:block"
             />            
             <p className={cn("font-semibold", font.className)}>
-                LinksPage
+                {appName}
             </p>
         </div>
     );
