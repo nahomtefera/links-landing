@@ -3,8 +3,8 @@
 import { Doc } from "@/convex/_generated/dataModel";
 import IconPicker from "./ui/icon-picker";
 import { Button } from "./ui/button";
-import { ImageIcon, Smile, X } from "lucide-react";
-import { ElementRef, useRef, useState } from "react";
+import { Eye, EyeOff, ImageIcon, Smile, X } from "lucide-react";
+import { Dispatch, ElementRef, SetStateAction, useRef, useState } from "react";
 import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react"
 import TextareaAutosize from "react-textarea-autosize"
@@ -12,11 +12,15 @@ import { useCoverImage } from "@/hooks/use-cover-image";
 
 interface ToolbarProps {
     initialData: Doc<"documents">;
+    previewEditor?: boolean;
+    setPreviewEditor?: Dispatch<SetStateAction<boolean>>;
     preview?: boolean;
 }
 
 const Toolbar = ({
     initialData,
+    previewEditor,
+    setPreviewEditor,
     preview
 }: ToolbarProps) => {
 
@@ -122,6 +126,29 @@ const Toolbar = ({
                         Add cover
                     </Button>
                 )}
+
+                {!preview && (
+                    !previewEditor
+                        ? <Button
+                                className="text-muted-foreground text-xs"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {setPreviewEditor && setPreviewEditor(true)}}
+                            >
+                                <Eye className="h-4 w-4 mr-2"/> 
+                                View
+                            </Button>
+                        : <Button
+                            className="text-muted-foreground text-xs"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {setPreviewEditor && setPreviewEditor(false)}}
+                            >
+                            <EyeOff className="h-4 w-4 mr-2"/>
+                            Edit
+                        </Button>                    
+                )}
+                                
             </div>
             {isEditing && !preview ? (
                 <TextareaAutosize 
